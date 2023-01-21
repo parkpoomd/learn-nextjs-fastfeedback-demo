@@ -1,11 +1,14 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from 'next/head';
+import Image from 'next/image';
+import { Inter } from '@next/font/google';
+import styles from '@/styles/Home.module.css';
+import { useAuth } from '@/lib/auth';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const auth = useAuth();
+
   return (
     <>
       <Head>
@@ -15,6 +18,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        <div>
+          <p>{auth?.user?.email}</p>
+          {auth?.user ? (
+            <button onClick={() => auth.signout()}>Sign Out</button>
+          ) : null}
+        </div>
+        <button onClick={() => auth.signInWithGithub()}>
+          Sign in with Github
+        </button>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
@@ -119,5 +131,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  )
+  );
 }
